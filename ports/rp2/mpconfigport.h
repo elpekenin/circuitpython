@@ -260,3 +260,8 @@ extern void cyw43_post_poll_hook(void);
 
 #define CYW43_POST_POLL_HOOK cyw43_post_poll_hook();
 #define MICROPY_CYW43_COUNTRY cyw43_country_code
+
+extern const struct _mp_obj_module_t mp_module_usb_hid;
+#define MICROPY_NIC_USB_HID { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) },
+
+

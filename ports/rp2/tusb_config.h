@@ -34,6 +34,19 @@
 #define CFG_TUD_CDC_RX_BUFSIZE  (256)
 #define CFG_TUD_CDC_TX_BUFSIZE  (256)
 
+#define CFG_TUD_HID              (1)
+
+//#define CFG_TUD_HID_BUFSIZE     (16)
+//#define CFG_TUD_EP_MAX          (16)
+
+enum /* HID */
+{
+  REPORT_ID_KEYBOARD = 1,       // 8 bytes: mod,resv,code[6]
+  REPORT_ID_MOUSE,              // 5 bytes: but,dx,dy,vert,horiz
+  REPORT_ID_CONSUMER_CONTROL,   // 2 bytes: ctrl16
+  REPORT_ID_GAMEPAD,            // 11 bytes: x,y,z,rz,rx,ry,hat,but32
+};
+
 #if MICROPY_HW_USB_MSC
 // Board and hardware specific configuration
 #define CFG_TUD_MSC             (1)
