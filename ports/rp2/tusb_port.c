@@ -25,8 +25,8 @@
  */
 
 #include "tusb.h"
-#include "py/mphal.h"
-#include "py/runtime.h"
+#include "py/mphal.h"   // !!
+#include "py/runtime.h" // !!
 #include "pico/unique_id.h"
 
 #ifndef MICROPY_HW_USB_VID
@@ -37,40 +37,48 @@
 #endif
 
 #if CFG_TUD_MSC
-#define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_MSC_DESC_LEN + TUD_HID_DESC_LEN)
+#define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_MSC_DESC_LEN + TUD_HID_DESC_LEN) // !!
 #else
-#define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN + TUD_HID_DESC_LEN)
+#define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN +                    TUD_HID_DESC_LEN) // !!
 #endif
 #define USBD_MAX_POWER_MA (250)
 
+// Interfaces reported on the USB device (??)
 enum {
   USBD_ITF_CDC=0, USBD_ITF_CDC_DATA, //needs 2 interfaces
   USBD_ITF_MSC,
-  USBD_ITF_HID,
+  USBD_ITF_HID, // !!
   USBD_ITF_MAX,
 };
 
-#define USBD_CDC_EP_CMD (0x81)
-#define USBD_CDC_EP_OUT (0x02)
-#define USBD_CDC_EP_IN  (0x82)
-#define USBD_CDC_CMD_MAX_SIZE (8)
+// Endpoints (memory addresses??) where incoming data is (saved??)
+enum { //moved to an enum
+  USBD_CDC_EP_CMD=0x81,
+  USBD_CDC_EP_IN,   
+  EPNUM_MSC_IN,
+  USBD_HID_EP_CMD // !!
+};
+
+// Endpoints for outgoing data (??)
+enum { // moved to an enum
+  USBD_CDC_EP_OUT=0x02,
+  EPNUM_MSC_OUT
+};
+
+#define USBD_CDC_CMD_MAX_SIZE    (8)
 #define USBD_CDC_IN_OUT_MAX_SIZE (64)
 
-#define USBD_HID_EP_CMD (0x83)
-#define USBD_HID_POLL_INTERVAL (10) // in ms
+#define USBD_HID_POLL_INTERVAL   (10) //in ms !!
 
-#define EPNUM_MSC_OUT    (0x03)
-#define EPNUM_MSC_IN     (0x83)
-
-// Moved to an enum
-enum {
+// Addresses on the string list
+enum { // Moved to an enum
   USBD_STR_0,
   USBD_STR_MANUF,
   USBD_STR_PRODUCT,
   USBD_STR_SERIAL,
   USBD_STR_CDC,
   USBD_STR_MSC,
-  USBD_STR_HID
+  USBD_STR_HID // !!
 };
 
 uint8_t const desc_hid_report[] = {
@@ -122,9 +130,13 @@ static const uint8_t usbd_desc_cfg[USBD_DESC_LEN] = {
 
     TUD_CDC_DESCRIPTOR(USBD_ITF_CDC, USBD_STR_CDC, USBD_CDC_EP_CMD,
         USBD_CDC_CMD_MAX_SIZE, USBD_CDC_EP_OUT, USBD_CDC_EP_IN, USBD_CDC_IN_OUT_MAX_SIZE),
+   
     #if CFG_TUD_MSC
-    TUD_MSC_DESCRIPTOR(USBD_ITF_MSC, 5, EPNUM_MSC_OUT, EPNUM_MSC_IN, 64),
+    TUD_MSC_DESCRIPTOR(USBD_ITF_MSC, 5, EPNUM_MSC_OUT, EPNUM_MSC_IN, 64), // isn't this `5` USBD_STR_MSC??
     #endif
+
+    // Interface number, string index, protocol, 
+    // report descriptor len, EP In address, size & polling interval
     TUD_HID_DESCRIPTOR(USBD_ITF_HID, USBD_STR_HID, HID_ITF_PROTOCOL_NONE, 
         sizeof(desc_hid_report), USBD_HID_EP_CMD, CFG_TUD_HID_EP_BUFSIZE, USBD_HID_POLL_INTERVAL),
 };

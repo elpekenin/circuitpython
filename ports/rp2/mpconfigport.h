@@ -110,6 +110,20 @@
 #define MICROPY_SSL_MBEDTLS                     (1)
 #define MICROPY_PY_LWIP_SOCK_RAW                (MICROPY_PY_LWIP)
 
+/* OPTION 1 */
+// extern const struct _mp_obj_module_t mp_module_usb_hid;
+//   #define MICROPY_PY_USB_HID \
+//      { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) }, 
+
+/* OPTION 2 */
+// extern const struct _mp_obj_module_t mp_module_usb_hid;
+// #define MICROPY_PORT_BUILTIN_MODULES \
+    { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) },
+
+
+/* OPTION 3 */
+// #define MICROPY_PY_USB_HID_INCLUDEFILE          "ports/rp2/modusb_hid.c"
+
 // fatfs configuration
 #define MICROPY_FATFS_ENABLE_LFN                (1)
 #define MICROPY_FATFS_LFN_CODE_PAGE             437 /* 1=SFN/ANSI 437=LFN/U.S.(OEM) */
@@ -260,8 +274,5 @@ extern void cyw43_post_poll_hook(void);
 
 #define CYW43_POST_POLL_HOOK cyw43_post_poll_hook();
 #define MICROPY_CYW43_COUNTRY cyw43_country_code
-
-extern const struct _mp_obj_module_t mp_module_usb_hid;
-#define MICROPY_NIC_USB_HID { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) },
 
 

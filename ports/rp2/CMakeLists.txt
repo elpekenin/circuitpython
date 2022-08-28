@@ -104,6 +104,7 @@ set(MICROPY_SOURCE_DRIVERS
 )
 
 set(MICROPY_SOURCE_PORT
+    modusb_hid.c    # !!
     fatfs_port.c
     machine_adc.c
     machine_bitstream.c
@@ -132,6 +133,7 @@ set(MICROPY_SOURCE_PORT
 )
 
 set(MICROPY_SOURCE_QSTR
+    ${PROJECT_SOURCE_DIR}/modusb_hid.c # !!
     ${MICROPY_SOURCE_PY}
     ${MICROPY_DIR}/shared/readline/readline.c
     ${MICROPY_DIR}/shared/runtime/mpirq.c
