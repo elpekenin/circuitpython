@@ -9,7 +9,7 @@
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
+ * copies of the Software, and to permit persons to whom the Software isMP_ROM_QSTR
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in
@@ -110,19 +110,14 @@
 #define MICROPY_SSL_MBEDTLS                     (1)
 #define MICROPY_PY_LWIP_SOCK_RAW                (MICROPY_PY_LWIP)
 
-/* OPTION 1 */
-// extern const struct _mp_obj_module_t mp_module_usb_hid;
-//   #define MICROPY_PY_USB_HID \
-//      { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) }, 
-
-/* OPTION 2 */
-// extern const struct _mp_obj_module_t mp_module_usb_hid;
-// #define MICROPY_PORT_BUILTIN_MODULES \
-    { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) },
-
-
-/* OPTION 3 */
-// #define MICROPY_PY_USB_HID_INCLUDEFILE          "ports/rp2/modusb_hid.c"
+/* TESTING HID */
+extern const struct _mp_obj_module_t mp_module_usb_hid;
+// #define MICROPY_PY_USB_HID                   (1)
+// #define MICROPY_PY_USB_HID_INCLUDEFILE       "ports/rp2/modusb_hid.c"
+// #define MICROPY_PY_USB_HID { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) }, 
+// #define MICROPY_PORT_BUILTIN_MODULES { MP_ROM_QSTR(MP_QSTR_USB_HID), MP_ROM_PTR(&mp_module_usb_hid) },
+// MP_REGISTER_MODULE(MP_QSTR_usb_hid, &mp_module_usb_hid); 
+#define MICROPY_PORT_BUILTIN_MODULES { MP_OBJ_NEW_QSTR(MP_QSTR_usb_hid), (mp_obj_t)&mp_module_usb_hid },
 
 // fatfs configuration
 #define MICROPY_FATFS_ENABLE_LFN                (1)
